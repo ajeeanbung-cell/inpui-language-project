@@ -1,0 +1,173 @@
+// Version: 3.0.0
+type ChatMessage__559859432 =
+  {
+    authorId : UserId__158757552;
+    authorName : Text;
+    content : Text;
+    entryId : Nat;
+    id : Nat;
+    isDeleted : Bool;
+    timestamp : Timestamp__301639476
+  };
+type Contributor__377265151 =
+  {
+    contributionCount : Nat;
+    id : UserId__158757552;
+    isVerified : Bool;
+    joinedAt : Timestamp__301639476;
+    name : Text
+  };
+type CorpusEntry__192240691 =
+  {
+    addedBy : UserId__158757552;
+    audioId : ?Text;
+    audioStorageId : ?Text;
+    category : Text;
+    english : Text;
+    id : Nat;
+    inpui : Text;
+    isApproved : Bool;
+    tags : [Text];
+    timestamp : Timestamp__301639476
+  };
+type Data__159895909<T> = {var count : Nat__490723111; elements : [var ?T]};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__667636161<T> =
+  {children : [var ?Node__92254746<T>]; data : Data__159895909<T>};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__520550824<T> = {data : Data__159895909<T>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type List__415060402<T> = List__790383201<T>;
+type List__790383201<T> =
+  {
+    var blockIndex : Nat__490723111;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__490723111
+  };
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Node__92254746<T> =
+  {#internal : Internal__667636161<T>; #leaf : Leaf__520550824<T>};
+type OldAdminSettings__589275897 =
+  {adminPrincipal : Text; qrCodeData : Text; upiId : Text};
+type OldCorpusEntry__40657217 =
+  {
+    addedBy : UserId__158757552;
+    audioId : ?Text;
+    category : Text;
+    english : Text;
+    id : Nat;
+    inpui : Text;
+    isApproved : Bool;
+    tags : [Text];
+    timestamp : Timestamp__301639476
+  };
+type ParallelUploadEntry__410140453 =
+  {
+    english : Text;
+    id : Nat;
+    inpui : Text;
+    status : Text;
+    submittedBy : UserId__158757552;
+    timestamp : Timestamp__301639476
+  };
+type PredictionFeedback__665910906 =
+  {
+    entryId : Nat;
+    isCorrect : Bool;
+    predictedTranslation : Text;
+    timestamp : Timestamp__301639476;
+    userId : UserId__158757552
+  };
+type QueueEntry__353574847 =
+  {
+    english : ?Text;
+    id : Nat;
+    inpui : ?Text;
+    isDuplicate : Bool;
+    source : Text;
+    submittedBy : UserId__158757552;
+    timestamp : Timestamp__301639476
+  };
+type Set__532252804<T> = Set__710576254<T>;
+type Set__710576254<T> =
+  {var root : Node__92254746<T>; var size : Nat__490723111};
+type Timestamp__301639476 = Int;
+type UserId__158757552 = Text;
+actor ({
+  in var adminSettings : OldAdminSettings__589275897;
+  stable chatMessages :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?ChatMessage__559859432]];
+      var elementIndex : Nat__490723111
+    };
+  in contributors : List__415060402<Contributor__377265151>;
+  in corpus : List__415060402<OldCorpusEntry__40657217>;
+  in favorites : Map__605269027<UserId__158757552, Set__532252804<Nat>>;
+  in feedbacks : List__415060402<PredictionFeedback__665910906>;
+  in var nextCorpusId : Nat;
+  stable var nextMessageId : Nat;
+  in var nextParallelId : Nat;
+  in var nextQueueId : Nat;
+  in parallelQueue : List__415060402<ParallelUploadEntry__410140453>;
+  stable sampleEntries : [(Text, Text, Text, [Text])];
+  in translationQueue : List__415060402<QueueEntry__353574847>
+}, {
+  stable var adminSettings :
+    {adminPrincipals : [Text]; qrCodeData : Text; upiId : Text};
+  stable chatMessages :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?ChatMessage__559859432]];
+      var elementIndex : Nat__490723111
+    };
+  stable contributors :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Contributor__377265151]];
+      var elementIndex : Nat__490723111
+    };
+  stable corpus :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?CorpusEntry__192240691]];
+      var elementIndex : Nat__490723111
+    };
+  stable favorites :
+    {
+      var root : Node__46230540<UserId__158757552, Set__532252804<Nat>>;
+      var size : Nat__490723111
+    };
+  stable feedbacks :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?PredictionFeedback__665910906]];
+      var elementIndex : Nat__490723111
+    };
+  stable var nextCorpusId : Nat;
+  stable var nextMessageId : Nat;
+  stable var nextParallelId : Nat;
+  stable var nextQueueId : Nat;
+  stable parallelQueue :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?ParallelUploadEntry__410140453]];
+      var elementIndex : Nat__490723111
+    };
+  stable sampleEntries : [(Text, Text, Text, [Text])];
+  stable translationQueue :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?QueueEntry__353574847]];
+      var elementIndex : Nat__490723111
+    }
+}) ;

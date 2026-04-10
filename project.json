@@ -1,0 +1,27 @@
+{
+  "overview": "A comprehensive Inpui tribal language preservation app with voice contributions, corpus management, community chat, real audio storage, and admin controls to help preserve and grow the Inpui language community.",
+  "features": [
+    "Real audio storage and playback with direct upload support",
+    "Community chat for contributors to discuss translations",
+    "Multi-admin system with role assignment powers",
+    "Admin edit and delete controls over all contributions",
+    "Voice recording with real-time transcription",
+    "Corpus browser with search, filter, and favorites",
+    "Translation queue with CSV/XLSX upload",
+    "Flashcard and quiz mode for learning",
+    "Contributor leaderboard with badges and streaks",
+    "Statistics dashboard",
+    "Mobile fieldwork mode with offline sync"
+  ],
+  "category": "education",
+  "tags": [
+    "language-preservation",
+    "tribal-language",
+    "inpui",
+    "voice-recording",
+    "corpus",
+    "community",
+    "audio-storage"
+  ],
+  "last_updated": "2026-04-10T16:51:34.328Z"
+}

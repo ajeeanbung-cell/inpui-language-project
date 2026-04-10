@@ -1,0 +1,134 @@
+type UserId = text;
+type Timestamp = int;
+type Stats = 
+ record {
+   activeContributors: nat;
+   queueSize: nat;
+   totalEntries: nat;
+   totalFavorites: nat;
+ };
+type QueueEntry = 
+ record {
+   english: opt text;
+   id: nat;
+   inpui: opt text;
+   isDuplicate: bool;
+   source: text;
+   submittedBy: UserId;
+   timestamp: Timestamp;
+ };
+type ParallelUploadEntry = 
+ record {
+   english: text;
+   id: nat;
+   inpui: text;
+   status: text;
+   submittedBy: UserId;
+   timestamp: Timestamp;
+ };
+type CorpusEntry = 
+ record {
+   addedBy: UserId;
+   audioId: opt text;
+   audioStorageId: opt text;
+   category: text;
+   english: text;
+   id: nat;
+   inpui: text;
+   isApproved: bool;
+   tags: vec text;
+   timestamp: Timestamp;
+ };
+type Contributor = 
+ record {
+   contributionCount: nat;
+   id: UserId;
+   isVerified: bool;
+   joinedAt: Timestamp;
+   name: text;
+ };
+type ChatMessage = 
+ record {
+   authorId: UserId;
+   authorName: text;
+   content: text;
+   entryId: nat;
+   id: nat;
+   isDeleted: bool;
+   timestamp: Timestamp;
+ };
+type AdminSettings = 
+ record {
+   adminPrincipals: vec text;
+   qrCodeData: text;
+   upiId: text;
+ };
+service : {
+  addAdminPrincipal: ("principal": text) -> (variant {
+                                               err: text;
+                                               ok;
+                                             });
+  addBulkToQueue: (entries: vec record {
+                                  opt text;
+                                  opt text;
+                                }, source: text) -> (nat);
+  addChatMessage: (entryId: nat, authorName: text, content: text) ->
+   (variant {
+      err: text;
+      ok: nat;
+    });
+  addCorpusEntry: (inpui: text, english: text, category: text, tags:
+   vec text, audioId: opt text) -> (nat);
+  addToQueue: (inpui: opt text, english: opt text, source: text) -> (nat);
+  approveParallelEntry: (id: nat) -> (bool);
+  approveQueueEntry: (id: nat, inpui: text, english: text, category: 
+   text, tags: vec text) -> (nat);
+  autoSetFirstAdmin: () -> ();
+  awardBadge: (contributorId: text) -> (bool);
+  deleteChatMessage: (messageId: nat) -> (variant {
+                                            err: text;
+                                            ok;
+                                          });
+  deleteCorpusEntry: (id: nat) -> (variant {
+                                     err: text;
+                                     ok: opt text;
+                                   });
+  exportCorpus: () -> (vec CorpusEntry) query;
+  getAdminPrincipals: () -> (vec text) query;
+  getAdminSettings: () -> (AdminSettings) query;
+  getChatMessages: (entryId: nat) -> (vec ChatMessage) query;
+  getContributors: () -> (vec Contributor) query;
+  getCorpusEntries: () -> (vec CorpusEntry) query;
+  getFavorites: (userId: text) -> (vec nat) query;
+  getLeaderboard: () -> (vec Contributor) query;
+  getPendingParallelEntries: () -> (vec ParallelUploadEntry) query;
+  getPredictions: ("text": text) -> (vec record {
+                                           CorpusEntry;
+                                           float64;
+                                         }) query;
+  getQueue: () -> (vec QueueEntry) query;
+  getStats: () -> (Stats) query;
+  isCallerAdmin: () -> (bool) query;
+  registerContributor: (name: text) -> (bool);
+  rejectParallelEntry: (id: nat) -> (bool);
+  removeAdminPrincipal: ("principal": text) -> (variant {
+                                                  err: text;
+                                                  ok;
+                                                });
+  removeFromQueue: (id: nat) -> (bool);
+  searchCorpus: (searchTerm: text, category: opt text) ->
+   (vec CorpusEntry) query;
+  submitParallelEntries: (entries: vec record {
+                                         text;
+                                         text;
+                                       }) -> (nat);
+  submitPredictionFeedback: (entryId: nat, predictedTranslation: text,
+   isCorrect: bool) -> (bool);
+  toggleFavorite: (entryId: nat, userId: text) -> (bool);
+  updateAdminSettings: (upiId: text, qrCodeData: text) -> (bool);
+  updateCorpusEntry: (id: nat, inpui: text, english: text, category: 
+   text, tags: vec text) -> (variant {
+                               err: text;
+                               ok;
+                             });
+}
